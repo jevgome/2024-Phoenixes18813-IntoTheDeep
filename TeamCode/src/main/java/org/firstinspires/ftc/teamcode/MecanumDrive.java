@@ -62,6 +62,17 @@ public final class MecanumDrive {
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
+        // drive motor setup
+        public String leftFrontDriveName = "leftFront";
+        public String leftBackDriveName = "leftBack";
+        public String rightFrontDriveName = "rightFront";
+        public String rightBackDriveName = "rightBack";
+
+        public DcMotorSimple.Direction leftFrontDriveDirection = DcMotorSimple.Direction.REVERSE;
+        public DcMotorSimple.Direction leftBackDriveDirection = DcMotorSimple.Direction.REVERSE;
+        public DcMotorSimple.Direction rightFrontDriveDirection = DcMotorSimple.Direction.FORWARD;
+        public DcMotorSimple.Direction rightBackDriveDirection = DcMotorSimple.Direction.FORWARD;
+
         // drive model parameters
         public double inPerTick = 1;
         public double lateralInPerTick = inPerTick;
@@ -217,10 +228,10 @@ public final class MecanumDrive {
 
         // TODO: make sure your config has motors with these names (or change them)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, PARAMS.leftFrontDriveName);
+        leftBack = hardwareMap.get(DcMotorEx.class, PARAMS.leftBackDriveName);
+        rightBack = hardwareMap.get(DcMotorEx.class, PARAMS.rightBackDriveName);
+        rightFront = hardwareMap.get(DcMotorEx.class, PARAMS.rightFrontDriveName);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -228,7 +239,10 @@ public final class MecanumDrive {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // TODO: reverse motor directions if needed
-        //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(PARAMS.leftFrontDriveDirection);
+        leftBack.setDirection(PARAMS.leftBackDriveDirection);
+        rightBack.setDirection(PARAMS.rightBackDriveDirection);
+        rightFront.setDirection(PARAMS.rightFrontDriveDirection);
 
         // TODO: make sure your config has an IMU with this name (can be BNO or BHI)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
