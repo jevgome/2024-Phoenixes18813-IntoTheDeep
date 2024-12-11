@@ -70,7 +70,7 @@ public final class MecanumDrive {
 
         public DcMotorSimple.Direction leftFrontDriveDirection = DcMotorSimple.Direction.REVERSE;
         public DcMotorSimple.Direction leftBackDriveDirection = DcMotorSimple.Direction.REVERSE;
-        public DcMotorSimple.Direction rightFrontDriveDirection = DcMotorSimple.Direction.FORWARD;
+        public DcMotorSimple.Direction rightFrontDriveDirection = DcMotorSimple.Direction.REVERSE;
         public DcMotorSimple.Direction rightBackDriveDirection = DcMotorSimple.Direction.FORWARD;
 
         // drive model parameters
