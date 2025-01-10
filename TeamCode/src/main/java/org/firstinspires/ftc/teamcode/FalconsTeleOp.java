@@ -4,19 +4,21 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class FalconsTeleOp extends LinearOpMode {
     //Initialize motors, servos, sensors, imus, etc.
-    DcMotorEx motorLF, motorRF, motorLB, motorRB, lift;
+    DcMotorEx motorLF, motorRF, motorLB, motorRB, lift, arm, extender;
     // TODO: Uncomment the following line if you are using servos
-    //Servo Claw;
 
+    Servo claw;
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
 
 
     // The following code will run as soon as "INIT" is pressed on the Driver Station
     public void runOpMode() {
+
 
         //Define those motors and stuff
         //The string should be the name on the Driver Hub
@@ -27,6 +29,9 @@ public class FalconsTeleOp extends LinearOpMode {
         motorRB = (DcMotorEx) hardwareMap.dcMotor.get(DRIVE_PARAMS.rightBackDriveName);
         lift = (DcMotorEx) hardwareMap.dcMotor.get("lift");
 
+        arm = (DcMotorEx) hardwareMap.dcMotor.get("arm");
+        extender = (DcMotorEx) hardwareMap.dcMotor.get("extender");
+        claw = hardwareMap.servo.get("claw");
         // Use the following line as a template for defining new servos
         //Claw = (Servo) hardwareMap.servo.get("claw");
 
@@ -96,14 +101,38 @@ public class FalconsTeleOp extends LinearOpMode {
             motorLB.setPower(powerLB);
             motorRF.setPower(powerRF);
             motorRB.setPower(powerRB);
-            if (gamepad1.left_trigger>0){
-                lift.setPower(gamepad1.left_trigger);
-            } else if (gamepad1.right_trigger>0){
-                lift.setPower(gamepad1.right_trigger*-1);
-            } else {
-                lift.setPower(0);
-            }
 
+//            if (gamepad1.left_trigger>0){
+//                lift.setPower(gamepad1.left_trigger);
+//            } else if (gamepad1.right_trigger>0){
+//                lift.setPower(gamepad1.right_trigger*-1);
+//            } else {
+//                lift.setPower(0);
+//            }
+
+            if (gamepad1.right_bumper) claw.setPosition(1.0);
+            if (gamepad1.left_bumper) claw.setPosition(0.3);
+
+//            if (gamepad1.a) {
+//                extender.setPower(1);
+//            } else if (gamepad1.b) {
+//                extender.setPower(-1);
+//            } else {
+//                extender.setPower(0);
+//            }
+//
+//            if (gamepad1.x) {
+//                arm.setPower(1);
+//            } else if (gamepad1.y) {
+//                arm.setPower(-1);
+//            } else {
+//                arm.setPower(0);
+//            }
+
+            arm.setPower(-gamepad2.right_stick_y);
+            lift.setPower(-gamepad2.left_stick_y);
+
+            extender.setPower(gamepad2.a ? 1.0 : gamepad2.b ? -1.0 : 0);
 
             // If you want to print information to the Driver Station, use telemetry
             // addData() lets you give a string which is automatically followed by a ":" when printed
