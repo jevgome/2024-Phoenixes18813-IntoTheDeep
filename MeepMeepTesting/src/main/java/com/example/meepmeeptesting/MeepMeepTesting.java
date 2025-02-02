@@ -19,6 +19,7 @@ public class MeepMeepTesting {
         // With a field size of 800 pixels
         int flip = 1;
         int flip2 = 1;
+        int armVel = 0;
         MeepMeep meepMeep = new MeepMeep(600);
         Pose2d rightPos = new Pose2d(-12 * flip2,62 * flip2,Math.toRadians(-90 + 90 - 90 * flip2));
         Pose2d leftPos = new Pose2d(36 * flip,62 * flip,Math.toRadians(-90 + 90 - 90 * flip));
@@ -36,20 +37,21 @@ public class MeepMeepTesting {
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     basket(10000);
                                 }) // Arm up, lift up
-                                .lineToLinearHeading(new Pose2d(53, 50, Math.toRadians(45)))
-                                .forward(4)
+                                .waitSeconds(1)
+                                .lineToLinearHeading(new Pose2d(53, 50, Math.toRadians(60)))
+                                .forward(6)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     openClaw();
                                 }) // Claw open
                                 .waitSeconds(0.3)
 
                                 // First cycle
-                                .back(4)
+                                .back(8)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     floor(10000);
                                 }) // Arm down, lift down
-                                .lineToLinearHeading(new Pose2d(47.5, 50, Math.toRadians(-90)))
-                                .forward(3)
+                                .lineToLinearHeading(new Pose2d(52, 51, Math.toRadians(-90)))
+                                .forward(6)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, ()->{
                                     closeClaw();
                                 }) // Claw close
@@ -57,19 +59,21 @@ public class MeepMeepTesting {
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     basket(10000);
                                 }) // Arm up, lift up
-                                .lineToLinearHeading(new Pose2d(53, 50, Math.toRadians(45)))
-                                .forward(4)
+                                .waitSeconds(0.5)
+                                .lineToLinearHeading(new Pose2d(50, 50, Math.toRadians(55)))
+                                .forward(8)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     openClaw();
                                 }) // Claw open
                                 .waitSeconds(0.3)
+                                .back(6)
 
                                 // Second cycle
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     floor(10000);
                                 }) // Arm down, lift down
-                                .lineToLinearHeading(new Pose2d(57.5, 50, Math.toRadians(-90)))
-                                .forward(3)
+                                .lineToLinearHeading(new Pose2d(60, 52, Math.toRadians(-90)))
+                                .forward(6)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, ()->{
                                     closeClaw();
                                 }) // Claw close
@@ -77,29 +81,31 @@ public class MeepMeepTesting {
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     basket(10000);
                                 }) // Arm up, lift up
-                                .lineToLinearHeading(new Pose2d(53, 50, Math.toRadians(45)))
-                                .forward(4)
+                                .waitSeconds(0.5)
+                                .lineToLinearHeading(new Pose2d(48, 50, Math.toRadians(40)))
+                                .forward(12)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     openClaw();
                                 }) // Claw open
                                 .waitSeconds(0.3)
 
-                                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {floor(10000);})
-                                .lineToLinearHeading(new Pose2d(40, 25, Math.toRadians(0)))
-                                .forward(3)
+                                .UNSTABLE_addTemporalMarkerOffset(0.7, () -> {floor(10000);})
+                                .lineToLinearHeading(new Pose2d(49.3, 31, Math.toRadians(0)))
+                                .forward(6.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {closeClaw();})
                                 .waitSeconds(0.3)
-
+                                .back(8)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     basket(10000);
                                 }) // Arm up, lift up
-                                .lineToLinearHeading(new Pose2d(53, 50, Math.toRadians(45)))
-                                .forward(4)
+                                .waitSeconds(0.5)
+                                .lineToLinearHeading(new Pose2d(50, 50, Math.toRadians(45)))
+                                .forward(10)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
                                     openClaw();
                                 }) // Claw open
                                 .waitSeconds(0.3)
-
+                                .back(6)
 
                                 // Park
                                 .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
@@ -108,7 +114,7 @@ public class MeepMeepTesting {
                                 .lineToLinearHeading(new Pose2d(34, 12, Math.toRadians(180)))
                                 .forward(10)
                                 .UNSTABLE_addTemporalMarkerOffset(-1.0, () -> {
-                                    arm(3600, 5000);
+                                    arm(1450, 5000);
                                 })
                                 .waitSeconds(3)
                                 .build()
@@ -123,59 +129,57 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(rightPos)
                                 // Pre-load
-                                .addTemporalMarker(-0.6, () -> {
-                                    chamber(10000);
-                                }) // Arm up, lift up
-                                .splineToConstantHeading(new Vector2d(-9, 35), Math.toRadians(257.62))
+                                .addTemporalMarker(0.0, () -> {
+                                    chamber(armVel);
+                                })
+                                .lineToLinearHeading(new Pose2d(-6, 38, Math.toRadians(-90)))
+                                .forward(3)
+//                    .splineToConstantHeading(new Vector2d(-6, 35), Math.toRadians(257.62))
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, ()->{openClaw();}) // Open claw
                                 .waitSeconds(0.3)
 
                                 // To first
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
-                                    reset(10000);
+                                .UNSTABLE_addTemporalMarkerOffset(1.1, () -> {
+                                    wall(10000);
                                 }) // lift down, arm reset
                                 .back(4)
                                 .splineTo(new Vector2d(-34.46, 29.30), Math.toRadians(268.49))
-                                .splineToSplineHeading(new Pose2d(-48.76, 9.04, Math.toRadians(90.00)), Math.toRadians(180.00))
-                                .strafeLeft(10)
-                                .lineToConstantHeading(new Vector2d(-48-10, 51)) // Push second
-                                .lineToConstantHeading(new Vector2d(-48-10, 9.04)) // Go back
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
-                                    wall(10000);
-                                }) // lift down, arm reset
-                                .strafeRight(10)
-                                .lineToConstantHeading(new Vector2d(-48, 51)) // Push first
-                                // Grab from wall
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {closeClaw();})
-                                .waitSeconds(0.3)
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {lift(500, 10000);})
-                                .waitSeconds(0.3)
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {chamber(10000);})
-                                .lineToLinearHeading(new Pose2d(-10, 40.65, Math.toRadians(-90.00)))
-                                .forward(3)
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {openClaw();})
-                                .waitSeconds(0.3)
-                                // To second
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {
-                                    wall(10000);
-                                }) // lift down, arm reset
-                                .back(4)
-                                .lineToLinearHeading(new Pose2d(-48, 46, Math.toRadians(90.00)))
-                                .forward(5)
+                                .splineToSplineHeading(new Pose2d(-46, 14, Math.toRadians(90.00)), Math.toRadians(180.00))
+                                .lineToConstantHeading(new Vector2d(-46, 51.5)) // Push first
 
                                 // Grab from wall
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {closeClaw();})
                                 .waitSeconds(0.3)
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {lift(500, 10000);})
-                                .waitSeconds(0.3)
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {chamber(10000);})
-                                .lineToLinearHeading(new Pose2d(-10, 40.65, Math.toRadians(-90.00)))
-                                .forward(3)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {chamber(10000);})
+
+                                .lineToLinearHeading(new Pose2d(-8, 40.65, Math.toRadians(-90.00 + 1e-6)))
+                                .forward(2)
                                 .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {openClaw();})
                                 .waitSeconds(0.3)
-                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {reset(10000);})
-                                .back(10)
-                                .lineTo(new Vector2d(-43, 50))
+
+                                // To second
+                                .UNSTABLE_addTemporalMarkerOffset(2.0, () -> {
+                                    wall(10000);
+                                }) // lift down, arm reset
+                                .back(4)
+                                .lineToLinearHeading(new Pose2d(-46, 47, Math.toRadians(90.00)))
+                                .forward(6.5)
+
+                                // Grab from wall
+                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {closeClaw();})
+                                .waitSeconds(0.3)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {chamber(10000);})
+                                .lineToLinearHeading(new Pose2d(-8, 40.65, Math.toRadians(-90.00+1e-6)))
+                                .forward(2)
+                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {openClaw();})
+                                .waitSeconds(0.3)
+                                .UNSTABLE_addTemporalMarkerOffset(0.0, () -> {arm(1450);})
+                                .back(4)
+                                .splineTo(new Vector2d(-34.46, 29.30), Math.toRadians(268.49))
+                                .splineToSplineHeading(new Pose2d(-46, 14, Math.toRadians(90.00)), Math.toRadians(180.00))
+                                .strafeLeft(8.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {reset(10000);})
+                                .forward(50)
                                 .build()
                 );
 
@@ -196,6 +200,9 @@ public class MeepMeepTesting {
     public static void arm(int pos, double velocity) {
     }
 
+    public static void arm(int pos) {
+    }
+
     public static void armDown(double velocity) {arm(2000, velocity);}
 
     public static void armUp(double velocity) {arm(1000, velocity);}
@@ -206,7 +213,7 @@ public class MeepMeepTesting {
 
     public static void wall(double velocity) {arm(0, velocity);}
     public static void basket(double velocity) {arm(0, velocity);}
-    public static void chamber(double velocity) {arm(0, velocity);}
+    public static void chamber(int velocity) {arm(0, velocity);}
     public static void floor(double velocity) {arm(0, velocity);}
 
     public static void lift(int pos, double velocity) {
