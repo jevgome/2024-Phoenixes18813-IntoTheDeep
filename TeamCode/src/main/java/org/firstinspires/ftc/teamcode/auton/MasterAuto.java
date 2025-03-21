@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.auton;
 
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -7,18 +7,24 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 import org.firstinspires.ftc.teamcode.roadrunnertuning.drive.SampleMecanumDrive;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.roadrunnertuning.trajectorysequence.TrajectorySequence;
-
-
 import com.qualcomm.robotcore.hardware.*;
+
+import org.firstinspires.ftc.teamcode.storage;
 
 @Autonomous(group = "!auto")
 public class MasterAuto extends LinearOpMode {
     DcMotorEx arm,lift,extender;
     Servo claw;
 
+<<<<<<< Updated upstream:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/MasterAuto.java
     boolean right;
+=======
+    boolean wait, two;
+    boolean right, parkBool = true;
+>>>>>>> Stashed changes:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auton/MasterAuto.java
+
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -126,10 +132,19 @@ public class MasterAuto extends LinearOpMode {
 
             TrajectorySequence rightTraj = drive.trajectorySequenceBuilder(startPose)
                     // Pre-load
+<<<<<<< Updated upstream:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/MasterAuto.java
                     .addTemporalMarker(-0.6, () -> {
                         chamber(10000);
                     }) // Arm up, lift up
                     .splineToConstantHeading(new Vector2d(-10, 35), Math.toRadians(257.62))
+=======
+                    .addTemporalMarker(0.0, () -> {
+                        chamber(storage.armVel);
+                    })
+                    .lineToLinearHeading(new Pose2d(-6, 38, Math.toRadians(-90)))
+                    .forward(3)
+//                    .splineToConstantHeading(new Vector2d(-6, 35), Math.toRadians(257.62))
+>>>>>>> Stashed changes:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auton/MasterAuto.java
                     .UNSTABLE_addTemporalMarkerOffset(0.0, ()->{openClaw();}) // Open claw
                     .waitSeconds(0.3)
 
@@ -183,8 +198,20 @@ public class MasterAuto extends LinearOpMode {
             telemetry.addData("Starting Position",right ? "right" : "left");
             telemetry.update();
         }
+        storage.currentPose = drive.getPoseEstimate();
     }
 
+<<<<<<< Updated upstream:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/MasterAuto.java
+=======
+    public void arm(int pos) {
+        arm.setTargetPosition(pos);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setVelocity(storage.armVel);
+
+        telemetry.addData("Moving Arm to",pos);
+        telemetry.update();
+    }
+>>>>>>> Stashed changes:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auton/MasterAuto.java
     public void arm(int pos, double velocity) {
         arm.setTargetPosition(pos);
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -204,7 +231,24 @@ public class MasterAuto extends LinearOpMode {
     public void chamber(double velocity) {arm(4500, velocity);
         lift(545, velocity);}
     public void reset(double velocity) {arm(0, velocity);
+<<<<<<< Updated upstream:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/MasterAuto.java
         lift(0, velocity);}
+=======
+        lift(0);}
+
+    public void lift(int pos) {
+        lift.setTargetPosition(pos);
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift.setVelocity(storage.liftVel);
+
+        lift2.setTargetPosition(pos);
+        lift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift2.setVelocity(storage.liftVel);
+
+        telemetry.addData("Lifting to",pos);
+        telemetry.update();
+    }
+>>>>>>> Stashed changes:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auton/MasterAuto.java
 
     public void lift(int pos, double velocity) {
         lift.setTargetPosition(pos);
